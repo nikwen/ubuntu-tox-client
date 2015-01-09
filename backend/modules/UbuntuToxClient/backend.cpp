@@ -25,7 +25,7 @@
 
 void BackendPlugin::registerTypes(const char *uri)
 {
-    Q_ASSERT(uri == QLatin1String("Ubuntu_Tox_Client"));
+    Q_ASSERT(uri == QLatin1String("UbuntuToxClient"));
 
     qmlRegisterType<ToxBackend>(uri, 1, 0, "ToxBackend");
 }

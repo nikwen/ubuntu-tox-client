@@ -21,7 +21,7 @@ import QtQuick 2.3
 import Ubuntu.Components 1.1
 import Ubuntu.Components.ListItems 1.0 as ListItem
 import Ubuntu.Components.Themes.Ambiance 0.1
-import Ubuntu_Tox_Client 1.0
+import UbuntuToxClient 1.0
 
 import "ui"
 
