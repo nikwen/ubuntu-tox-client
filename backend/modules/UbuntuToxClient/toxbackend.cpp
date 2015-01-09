@@ -174,6 +174,7 @@ void ToxBackend::acceptFriendRequest(const QString& userId) {
     if (friendId == -1) {
         emit failedToAddFriend(userId);
     } else {
+        saveTox();
         emit friendAdded(friendId, userId);
     }
 }
@@ -181,12 +182,14 @@ void ToxBackend::acceptFriendRequest(const QString& userId) {
 void ToxBackend::setUserName(const QString& name) {
     CString cName(name);
     tox_set_name(tox, cName.data(), std::min((int) cName.size(), TOX_MAX_NAME_LENGTH));
+    saveTox();
     emit userNameChanged();
 }
 
 void ToxBackend::setStatusMessage(const QString& message) {
     CString cMessage(message);
     tox_set_status_message(tox, cMessage.data(), std::min((int) cMessage.size(), TOX_MAX_STATUSMESSAGE_LENGTH));
+    saveTox();
     emit statusMessageChanged();
 }
 
