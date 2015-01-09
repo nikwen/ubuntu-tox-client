@@ -17,18 +17,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDebug>
+
+#include <signal.h>
+#include <unistd.h>
+#include <sys/socket.h>
+
 #include "toxbackend.h"
-#include "QDebug"
 #include "cstring.h"
 #include "cdata.h"
-
 #include "bootstrapnodes.h"
+
+//Static members from header file:
+int ToxBackend::sigtermFd[2];
 
 ToxBackend::ToxBackend(QObject *parent) :
     QObject(parent),
     m_toxId(""),
     m_connected(false)
 {
+    //Setup SIGTERM handlers to get notified when the application is closed
+
+    int setUpHandlersResult = ToxBackend::setUpUnixSignalHandlers();
+
+    if (setUpHandlersResult > 0) {
+        qFatal("sigaction(SIGTERM) exited with return code > 0");
+    } else {
+        if (::socketpair(AF_UNIX, SOCK_STREAM, 0, ToxBackend::sigtermFd)) {
+            qFatal("Couldn't create TERM socketpair");
+        }
+        termSocketNotifier = new QSocketNotifier(ToxBackend::sigtermFd[1], QSocketNotifier::Read, this);
+        connect(termSocketNotifier, SIGNAL(activated(int)), this, SLOT(handleSigTerm()));
+    }
+
     //Create timer for tox "main loop"
 
     toxTimer = new QTimer(this);
@@ -192,4 +213,35 @@ QString ToxBackend::getOwnStatusMessage() {
     delete[] messageData;
 
     return message;
+}
+
+//SIGTERM handling
+
+int ToxBackend::setUpUnixSignalHandlers() {
+    struct sigaction term;
+
+    term.sa_handler = ToxBackend::termSignalHandler;
+    sigemptyset(&term.sa_mask);
+    term.sa_flags |= SA_RESTART;
+
+    if (sigaction(SIGTERM, &term, 0) > 0) {
+        return 2;
+    }
+
+    return 0;
+}
+
+void ToxBackend::termSignalHandler(int) {
+    char a = 1;
+    ::write(ToxBackend::sigtermFd[0], &a, sizeof(a));
+}
+
+void ToxBackend::handleSigTerm() {
+    termSocketNotifier->setEnabled(false);
+    char tmp;
+    ::read(ToxBackend::sigtermFd[1], &tmp, sizeof(tmp));
+
+    qDebug() << "SIGTERM received, need to call tox_save() here";
+
+    termSocketNotifier->setEnabled(true);
 }

@@ -22,6 +22,8 @@
 
 #include <QObject>
 #include <QTimer>
+#include <QSocketNotifier>
+
 #include "tox/tox.h"
 
 class ToxBackend : public QObject
@@ -36,6 +38,10 @@ public:
     explicit ToxBackend(QObject *parent = 0);
     ~ToxBackend();
 
+    //SIGTERM handling
+    static int setUpUnixSignalHandlers();
+    static void termSignalHandler(int unused);
+
 public slots:
     QString getToxId() { return m_toxId; }
     QString getOwnUserName();
@@ -49,6 +55,9 @@ public slots:
 
     qint16 getMaximumUserNameLength() { return TOX_MAX_NAME_LENGTH; }
     qint16 getMaximumStatusMessageLength() { return TOX_MAX_STATUSMESSAGE_LENGTH; }
+
+    //SIGTERM handling
+    void handleSigTerm();
 
 signals:
     void toxIdChanged();
@@ -75,6 +84,10 @@ private:
     bool isConnectedCheck();
 
     static void onFriendRequest(Tox* tox, const uint8_t* cUserId, const uint8_t* cMessage, uint16_t cMessageSize, void* backend);
+
+    //SIGTERM handling
+    static int sigtermFd[2];
+    QSocketNotifier *termSocketNotifier;
 };
 
 #endif // TOXBACKEND_H
