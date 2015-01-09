@@ -18,6 +18,9 @@
  */
 
 #include <QDebug>
+#include <QSaveFile>
+#include <QStandardPaths>
+#include <QDir>
 
 #include <signal.h>
 #include <unistd.h>
@@ -215,6 +218,47 @@ QString ToxBackend::getOwnStatusMessage() {
     return message;
 }
 
+void ToxBackend::saveTox() {
+    if (!tox) {
+        qWarning() << "Tox not started, will not save tox status!";
+        return;
+    }
+
+    //Create app data directory if it does not exist and save tox status
+
+    QDir dataDir = QDir(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+
+    if (!dataDir.exists() && !dataDir.mkpath(dataDir.absolutePath())) {
+        qCritical() << "Failed to create directory:" << dataDir;
+        return;
+    }
+
+    //Open file to save tox status to
+
+    QString path = dataDir.absoluteFilePath("save.tox"); //TODO: Change file name?
+    QSaveFile configurationFile(path);
+    if (!configurationFile.open(QIODevice::WriteOnly)) {
+        qCritical() << "Failed to open file:" << path;
+        return;
+    }
+
+    qDebug() << "Saving tox status to" << path;
+
+    //Get tox size and save tox data
+
+    uint32_t fileSize = tox_size(tox);
+
+    if (fileSize > 0 && fileSize <= INT32_MAX) {
+        uint8_t *data = new uint8_t[fileSize];
+        tox_save(tox, data);
+        configurationFile.write(reinterpret_cast<char *>(data), fileSize);
+        configurationFile.commit();
+        delete[] data;
+    } else {
+        qCritical() << "Invalid fileSize for tox status";
+    }
+}
+
 //SIGTERM handling
 
 int ToxBackend::setUpUnixSignalHandlers() {
@@ -241,7 +285,9 @@ void ToxBackend::handleSigTerm() {
     char tmp;
     ::read(ToxBackend::sigtermFd[1], &tmp, sizeof(tmp));
 
-    qDebug() << "SIGTERM received, need to call tox_save() here";
+    qDebug() << "SIGTERM received";
+
+    saveTox();
 
     termSocketNotifier->setEnabled(true);
 }

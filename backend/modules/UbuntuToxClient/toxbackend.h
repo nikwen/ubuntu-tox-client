@@ -56,6 +56,8 @@ public slots:
     qint16 getMaximumUserNameLength() { return TOX_MAX_NAME_LENGTH; }
     qint16 getMaximumStatusMessageLength() { return TOX_MAX_STATUSMESSAGE_LENGTH; }
 
+    void saveTox();
+
     //SIGTERM handling
     void handleSigTerm();
 
