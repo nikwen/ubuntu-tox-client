@@ -1,0 +1,11 @@
+[Desktop Entry]
+_Name=ubuntu-tox-client
+Comment=Tox client
+Exec=@EXEC@
+Icon=@ICON@
+Terminal=false
+Type=Application
+X-Ubuntu-Touch=true
+
+
+

@@ -1,0 +1,15 @@
+{
+    "name": "@APP_ID@",
+    "description": "Tox client",
+    "architecture": "@CLICK_ARCH@",
+    "title": "@APP_NAME@",
+    "hooks": {
+        "ubuntu-tox-client": {
+            "apparmor": "ubuntu-tox-client.apparmor",
+            "desktop": "ubuntu-tox-client.desktop"
+        }
+    },
+    "version": "0.1",
+    "maintainer": "Niklas Wenzel <nikwen.developer@gmail.com>",
+    "framework": "ubuntu-sdk-14.10"
+}

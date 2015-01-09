@@ -1,0 +1,127 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-01-09 01:26+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../app/main.qml:46
+msgid "Tox-Client"
+msgstr ""
+
+#: ../app/main.qml:52
+msgid "About"
+msgstr ""
+
+#: ../app/main.qml:59 ../app/main.qml:149
+msgid "Settings"
+msgstr ""
+
+#: ../app/main.qml:77
+msgid "Your Tox-ID is (click to copy):"
+msgstr ""
+
+#: ../app/main.qml:105
+msgid "You are connected to the DHT"
+msgstr ""
+
+#: ../app/main.qml:105
+msgid "You are <b>not</b> connected to the DHT"
+msgstr ""
+
+#: ../app/main.qml:116
+#, qt-format
+msgid "Incoming friend request from user %1<br>Message: %2"
+msgstr ""
+
+#: ../app/main.qml:126
+msgid "Accept friend request"
+msgstr ""
+
+#: ../app/main.qml:139
+msgid "Added friend successfully! :)"
+msgstr ""
+
+#: ../app/main.qml:139
+msgid "Failed to add friend! :("
+msgstr ""
+
+#: ../app/main.qml:157
+msgid "Save"
+msgstr ""
+
+#: ../app/main.qml:170
+msgid "Cancel"
+msgstr ""
+
+#: ../app/main.qml:194
+msgid "User name:"
+msgstr ""
+
+#: ../app/main.qml:217
+msgid "Status message:"
+msgstr ""
+
+#: ../app/ui/AboutPage.qml:26
+msgid "About ubuntu-tox-client"
+msgstr ""
+
+#: ../app/ui/AboutPage.qml:61
+msgid "Info:"
+msgstr ""
+
+#: ../app/ui/AboutPage.qml:65
+msgid "Version:"
+msgstr ""
+
+#: ../app/ui/AboutPage.qml:72
+msgid "Development:"
+msgstr ""
+
+#: ../app/ui/AboutPage.qml:76
+msgid "License:"
+msgstr ""
+
+#: ../app/ui/AboutPage.qml:85
+msgid "Source code & bug tracker:"
+msgstr ""
+
+#: ../app/ui/AboutPage.qml:94
+msgid "Authors:"
+msgstr ""
+
+#: ../app/ui/AboutPage.qml:100
+msgid "Maintainer"
+msgstr ""
+
+#: ../app/ui/AboutPage.qml:105
+msgid "Contact:"
+msgstr ""
+
+#: ../app/ui/AboutPage.qml:115
+msgid "Uses the following libraries:"
+msgstr ""
+
+#: ../app/ui/AboutPage.qml:130
+msgid "ISC license"
+msgstr ""
+
+#: ../app/ui/AboutPage.qml:137
+msgid "Uses code from the following projects:"
+msgstr ""
+
+#: /home/nikwen/Programmieren/Ubuntu/build-ubuntu-tox-client-UbuntuSDK_for_i386_GCC_ubuntu_sdk_14_10_utopic-Default/po/ubuntu-tox-client.desktop.in.h:1
+msgid "ubuntu-tox-client"
+msgstr ""
