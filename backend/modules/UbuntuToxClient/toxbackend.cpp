@@ -68,19 +68,19 @@ ToxBackend::ToxBackend(QObject *parent) :
 
     tox = tox_new(&toxOptions);
 
-    if (tox == NULL)
-    {
+    if (tox == NULL) {
         qCritical() << "Tox core failed to start";
         return;
     }
 
-    //Set the username
+    //Try to load saved tox status
 
-    setUserName(QString("Ubuntu User"));
+    if (!loadTox()) {
+        //Set a default username and status message
 
-    //Set the status message
-
-    setStatusMessage(QString("Toxing from my Ubuntu phone"));
+        setUserName(QString("Ubuntu User"));
+        setStatusMessage(QString("Toxing from my Ubuntu phone"));
+    }
 
     //Set the user status
 
@@ -102,7 +102,7 @@ ToxBackend::ToxBackend(QObject *parent) :
 
     setToxId(addressString);
 
-    //Start loop
+    //Start main loop
     tick();
 }
 
@@ -122,7 +122,7 @@ void ToxBackend::setConnected(bool connected) {
     }
 }
 
-void ToxBackend::setToxId(QString id) {
+void ToxBackend::setToxId(QString id) { //TODO: Better solution
     m_toxId = id;
     emit toxIdChanged();
 }
@@ -221,24 +221,39 @@ QString ToxBackend::getOwnStatusMessage() {
     return message;
 }
 
+QString ToxBackend::getConfigurationFilePath() {
+    //Create app data directory if it does not exist
+
+    QDir dataDir = QDir(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+
+    if (!dataDir.exists() && !dataDir.mkpath(dataDir.absolutePath())) {
+        qCritical() << "Failed to create directory:" << dataDir;
+        return nullptr;
+    }
+
+    //Return path for file "save.txt" in dataDir
+
+    QString path = dataDir.absoluteFilePath("save.tox"); //TODO: Change file name?
+
+    return path;
+}
+
 void ToxBackend::saveTox() {
     if (!tox) {
         qWarning() << "Tox not started, will not save tox status!";
         return;
     }
 
-    //Create app data directory if it does not exist and save tox status
-
-    QDir dataDir = QDir(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
-
-    if (!dataDir.exists() && !dataDir.mkpath(dataDir.absolutePath())) {
-        qCritical() << "Failed to create directory:" << dataDir;
-        return;
-    }
+    qDebug() << "Saving tox status";
 
     //Open file to save tox status to
 
-    QString path = dataDir.absoluteFilePath("save.tox"); //TODO: Change file name?
+    QString path = getConfigurationFilePath();
+    if (path == nullptr) {
+        qCritical() << "Failed to receive configuration file path";
+        return;
+    }
+
     QSaveFile configurationFile(path);
     if (!configurationFile.open(QIODevice::WriteOnly)) {
         qCritical() << "Failed to open file:" << path;
@@ -257,9 +272,59 @@ void ToxBackend::saveTox() {
         configurationFile.write(reinterpret_cast<char *>(data), fileSize);
         configurationFile.commit();
         delete[] data;
+
+        qDebug() << "Saved tox status";
     } else {
         qCritical() << "Invalid fileSize for tox status";
     }
+}
+
+/*
+ * Returns whether loading was successful
+ */
+bool ToxBackend::loadTox() {
+    qDebug() << "Loading tox status";
+
+    //Open file to load the tox status from
+
+    QString path = getConfigurationFilePath();
+    if (path == nullptr) {
+        qCritical() << "Failed to receive configuration file path";
+        return false;
+    }
+
+    QFile configurationFile(path);
+
+    if (!configurationFile.exists()) {
+        qWarning() << "File does not exist:" << path;
+        return false;
+    }
+
+    if (!configurationFile.open(QIODevice::ReadOnly)) {
+        qCritical() << "Failed to open file:" << path;
+        return false;
+    }
+
+    //Get file size and load tox data
+
+    bool returnValue;
+
+    qint64 fileSize = configurationFile.size();
+    if (fileSize > 0) {
+        QByteArray data = configurationFile.readAll();
+        int error = tox_load(tox, reinterpret_cast<uint8_t *>(data.data()), data.size());
+
+        if (error != 0) {
+            qWarning() << "tox_load failed with error" << error;
+            returnValue = false;
+        } else {
+            qDebug() << "Loaded tox status";
+            returnValue = true;
+        }
+    }
+    configurationFile.close();
+
+    return returnValue;
 }
 
 //SIGTERM handling
@@ -290,7 +355,7 @@ void ToxBackend::handleSigTerm() {
 
     qDebug() << "SIGTERM received";
 
-    saveTox();
+    saveTox(); //TODO: Run tox_kill()
 
     termSocketNotifier->setEnabled(true);
 }

@@ -56,8 +56,6 @@ public slots:
     qint16 getMaximumUserNameLength() { return TOX_MAX_NAME_LENGTH; }
     qint16 getMaximumStatusMessageLength() { return TOX_MAX_STATUSMESSAGE_LENGTH; }
 
-    void saveTox();
-
     //SIGTERM handling
     void handleSigTerm();
 
@@ -84,6 +82,10 @@ private:
     void setToxId(QString id);
     void setConnected(bool connected);
     bool isConnectedCheck();
+
+    QString getConfigurationFilePath();
+    void saveTox();
+    bool loadTox();
 
     static void onFriendRequest(Tox* tox, const uint8_t* cUserId, const uint8_t* cMessage, uint16_t cMessageSize, void* backend);
 
