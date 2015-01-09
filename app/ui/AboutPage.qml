@@ -87,7 +87,7 @@ Page {
                     text: "Github"
                 }
                 progression: true
-                onClicked: Qt.openUrlExternally("https://github.com/nikwen/forum-app") //TODO: Change link
+                onClicked: Qt.openUrlExternally("https://github.com/nikwen/ubuntu-tox-client")
             }
 
             ListItem.Header {

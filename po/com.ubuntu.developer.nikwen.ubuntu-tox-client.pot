@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-09 01:32+0100\n"
+"POT-Creation-Date: 2015-01-09 01:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -122,6 +122,6 @@ msgstr ""
 msgid "Uses code from the following projects:"
 msgstr ""
 
-#: /home/nikwen/Programmieren/Ubuntu/build-ubuntu-tox-client-UbuntuSDK_for_i386_GCC_ubuntu_sdk_14_10_utopic-Default/po/ubuntu-tox-client.desktop.in.h:1
+#: /home/nikwen/Programmieren/Ubuntu/build-ubuntu-tox-client-UbuntuSDK_for_armhf_GCC_ubuntu_sdk_14_10_utopic-Default/po/ubuntu-tox-client.desktop.in.h:1
 msgid "ubuntu-tox-client"
 msgstr ""
