@@ -327,6 +327,17 @@ bool ToxBackend::loadTox() {
     return returnValue;
 }
 
+void ToxBackend::cleanUpOnClose() {
+    saveTox();
+
+    qDebug() << "Killing tox...";
+
+    if (tox) {
+        tox_kill(tox);
+        tox = nullptr;
+    }
+}
+
 //SIGTERM handling
 
 int ToxBackend::setUpUnixSignalHandlers() {
@@ -355,7 +366,7 @@ void ToxBackend::handleSigTerm() {
 
     qDebug() << "SIGTERM received";
 
-    saveTox(); //TODO: Run tox_kill()
+    cleanUpOnClose();
 
     termSocketNotifier->setEnabled(true);
 }

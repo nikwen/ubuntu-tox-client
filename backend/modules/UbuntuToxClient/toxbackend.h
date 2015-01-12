@@ -87,6 +87,8 @@ private:
     void saveTox();
     bool loadTox();
 
+    void cleanUpOnClose();
+
     static void onFriendRequest(Tox* tox, const uint8_t* cUserId, const uint8_t* cMessage, uint16_t cMessageSize, void* backend);
 
     //SIGTERM handling
