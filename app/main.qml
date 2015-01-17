@@ -158,6 +158,7 @@ MainView {
             id: contactsListView
             height: parent.height
             width: parent.width
+            clip: true
 
             model: ContactsModel {
                 toxBackend: backend
