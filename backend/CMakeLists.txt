@@ -13,6 +13,8 @@ set(
     modules/UbuntuToxClient/toxbackend.cpp
     modules/UbuntuToxClient/cdata.cpp
     modules/UbuntuToxClient/cstring.cpp
+    modules/UbuntuToxClient/contactsmodel.cpp
+    modules/UbuntuToxClient/friend.cpp
     modules/UbuntuToxClient/bootstrapnodes.h
 )
 

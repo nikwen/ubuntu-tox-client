@@ -47,6 +47,13 @@ MainView {
 
         head.actions: [
             Action {
+                id: contacts1Action
+                iconName: "contact"
+                text: i18n.tr("Contacts")
+
+                onTriggered: pageStack.push(contactsPage)
+            },
+            Action {
                 id: aboutAction
                 iconName: "info"
                 text: i18n.tr("About")
@@ -138,6 +145,26 @@ MainView {
 
                 text: (success === true) ? i18n.tr("Added friend successfully! :)") : i18n.tr("Failed to add friend! :(")
                 visible: userId !== ""
+            }
+        }
+    }
+
+    Page {
+        id: contactsPage
+        title: i18n.tr("Contacts")
+        visible: false
+
+        ListView {
+            id: contactsListView
+            height: parent.height
+            width: parent.width
+
+            model: ContactsModel {
+                toxBackend: backend
+            }
+
+            delegate: ListItem.Standard {
+                text: model.display
             }
         }
     }

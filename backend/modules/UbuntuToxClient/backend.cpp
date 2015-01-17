@@ -21,6 +21,7 @@
 #include <QtQml/QQmlContext>
 #include "backend.h"
 #include "toxbackend.h"
+#include "contactsmodel.h"
 
 
 void BackendPlugin::registerTypes(const char *uri)
@@ -28,6 +29,7 @@ void BackendPlugin::registerTypes(const char *uri)
     Q_ASSERT(uri == QLatin1String("UbuntuToxClient"));
 
     qmlRegisterType<ToxBackend>(uri, 1, 0, "ToxBackend");
+    qmlRegisterType<ContactsModel>(uri, 1, 0, "ContactsModel");
 }
 
 void BackendPlugin::initializeEngine(QQmlEngine *engine, const char *uri)

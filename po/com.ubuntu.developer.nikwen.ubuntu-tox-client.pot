@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-10 00:06+0100\n"
+"POT-Creation-Date: 2015-01-17 23:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,56 +21,60 @@ msgstr ""
 msgid "Tox-Client"
 msgstr ""
 
-#: ../app/main.qml:52
+#: ../app/main.qml:52 ../app/main.qml:154
+msgid "Contacts"
+msgstr ""
+
+#: ../app/main.qml:59
 msgid "About"
 msgstr ""
 
-#: ../app/main.qml:59 ../app/main.qml:149
+#: ../app/main.qml:66 ../app/main.qml:176
 msgid "Settings"
 msgstr ""
 
-#: ../app/main.qml:77
+#: ../app/main.qml:84
 msgid "Your Tox-ID is (click to copy):"
 msgstr ""
 
-#: ../app/main.qml:105
+#: ../app/main.qml:112
 msgid "You are connected to the DHT"
 msgstr ""
 
-#: ../app/main.qml:105
+#: ../app/main.qml:112
 msgid "You are <b>not</b> connected to the DHT"
 msgstr ""
 
-#: ../app/main.qml:116
+#: ../app/main.qml:123
 #, qt-format
 msgid "Incoming friend request from user %1<br>Message: %2"
 msgstr ""
 
-#: ../app/main.qml:126
+#: ../app/main.qml:133
 msgid "Accept friend request"
 msgstr ""
 
-#: ../app/main.qml:139
+#: ../app/main.qml:146
 msgid "Added friend successfully! :)"
 msgstr ""
 
-#: ../app/main.qml:139
+#: ../app/main.qml:146
 msgid "Failed to add friend! :("
 msgstr ""
 
-#: ../app/main.qml:157
+#: ../app/main.qml:184
 msgid "Save"
 msgstr ""
 
-#: ../app/main.qml:170
+#: ../app/main.qml:197
 msgid "Cancel"
 msgstr ""
 
-#: ../app/main.qml:194
+#: ../app/main.qml:221
 msgid "User name:"
 msgstr ""
 
-#: ../app/main.qml:217
+#: ../app/main.qml:244
 msgid "Status message:"
 msgstr ""
 
@@ -122,6 +126,6 @@ msgstr ""
 msgid "Uses code from the following projects:"
 msgstr ""
 
-#: /home/nikwen/Programmieren/Ubuntu/build-ubuntu-tox-client-UbuntuSDK_for_armhf_GCC_ubuntu_sdk_14_10_utopic-Default/po/ubuntu-tox-client.desktop.in.h:1
+#: /home/nikwen/Programmieren/Ubuntu/build-ubuntu-tox-client-Desktop-Default/po/ubuntu-tox-client.desktop.in.h:1
 msgid "ubuntu-tox-client"
 msgstr ""

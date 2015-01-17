@@ -59,6 +59,9 @@ public slots:
     //SIGTERM handling
     void handleSigTerm();
 
+    //The following should only be used by ContactsModel!!!
+    Tox *getToxObject() { return tox; }
+
 signals:
     void toxIdChanged();
     void connectedChanged();
