@@ -166,8 +166,53 @@ MainView {
 
             delegate: ListItem.Standard {
                 text: model.display
+                onClicked: {
+                    pageStack.push(contactsDetailsPage)
+                    contactsDetailsPage.headline=model.display
+                }
             }
         }
+    }
+
+    Page {
+        id: contactsDetailsPage
+        title: i18n.tr("Chat with ")+headline
+        visible: false
+        anchors.fill: parent
+        property string headline: ""
+
+            ListModel {
+                id: exampleListModel
+
+                ListElement {
+                    name: "Hey"
+                    timestamp: "17:30:34"
+                    }
+                ListElement {
+                    name: "How are you?"
+                    timestamp: "17:35:30"
+                    }
+                ListElement {
+                    name: "I'm fine."
+                    timestamp: "17:39:04"
+                    }
+
+            }
+
+            ListView {
+                id: exampleListView
+                anchors.fill: parent
+                height: parent.height
+                width: parent.width
+                model: exampleListModel
+                clip: true
+
+                delegate: ListItem.Standard {
+                   text: timestamp + "  " + name
+                }
+            }
+
+
     }
 
     Page {

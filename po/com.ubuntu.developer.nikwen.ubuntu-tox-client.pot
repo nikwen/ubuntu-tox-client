@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-17 23:39+0100\n"
+"POT-Creation-Date: 2015-01-18 18:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: ../app/main.qml:66 ../app/main.qml:176
+#: ../app/main.qml:66 ../app/main.qml:222
 msgid "Settings"
 msgstr ""
 
@@ -62,19 +62,23 @@ msgstr ""
 msgid "Failed to add friend! :("
 msgstr ""
 
-#: ../app/main.qml:184
+#: ../app/main.qml:179
+msgid "Chat with "
+msgstr ""
+
+#: ../app/main.qml:230
 msgid "Save"
 msgstr ""
 
-#: ../app/main.qml:197
+#: ../app/main.qml:243
 msgid "Cancel"
 msgstr ""
 
-#: ../app/main.qml:221
+#: ../app/main.qml:267
 msgid "User name:"
 msgstr ""
 
-#: ../app/main.qml:244
+#: ../app/main.qml:290
 msgid "Status message:"
 msgstr ""
 
@@ -126,6 +130,6 @@ msgstr ""
 msgid "Uses code from the following projects:"
 msgstr ""
 
-#: /home/nikwen/Programmieren/Ubuntu/build-ubuntu-tox-client-Desktop-Default/po/ubuntu-tox-client.desktop.in.h:1
+#: /home/robbe/Programmieren/Ubuntu/build-ubuntu-tox-client-Desktop-Default/po/ubuntu-tox-client.desktop.in.h:1
 msgid "ubuntu-tox-client"
 msgstr ""
