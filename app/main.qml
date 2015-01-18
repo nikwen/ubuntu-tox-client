@@ -322,6 +322,8 @@ MainView {
 
         onConnectedChanged: console.log(connected ? "Connected" : "Disconnected")
 
+        Component.onDestruction: backend.cleanUpOnClose()
+
         onFriendRequestReceived: {
             console.log("Incoming friend request :)")
             friendRequestLabel.userId = userId
