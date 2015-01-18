@@ -11,15 +11,19 @@ public:
     Friend(const Friend&);
 
     void setFriendId(int friendId) { this->friendId = friendId; }
+    void setClientId(QString clientId) { this->clientId = clientId; }
     void setName(QString name) { this->name = name; }
     void setStatusMessage(QString statusMessage) { this->statusMessage = statusMessage; }
 
     int getFriendId() { return friendId; }
-    QString getName() { return name; } //TODO: Default name (tox id?) if name is empty
+    QString getClientId() { return clientId; }
+    QString getName() { return name; }
     QString getStatusMessage() { return statusMessage; }
 
 private:
+    //NOTE: When adding private attributes, make sure to adjust the copy constructor!
     int friendId;
+    QString clientId;
     QString name;
     QString statusMessage;
 

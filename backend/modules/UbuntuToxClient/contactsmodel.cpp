@@ -3,6 +3,7 @@
 #include <QDebug>
 
 #include "cstring.h"
+#include "cdata.h"
 
 ContactsModel::ContactsModel(QObject *parent) :
     QAbstractListModel(parent),
@@ -31,7 +32,8 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
 
     if (role == Qt::DisplayRole) {
         Friend f = friendList.at(index.row());
-        return f.getName();
+        QString name = f.getName();
+        return (name.size() != 0) ? name : f.getClientId();
     }
     else
         return QVariant();
@@ -138,6 +140,7 @@ void ContactsModel::addFriendToModel(int friendId, const QString &userId) {
     if (tox_get_client_id(tox, friendId, clientId) == 0) {
         Friend f;
         f.setFriendId(friendId);
+        f.setClientId(CUserId::toString(clientId));
 
         //Get the friend's name
         const int nameSize = tox_get_name_size(tox, friendId);
