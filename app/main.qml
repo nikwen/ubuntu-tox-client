@@ -166,6 +166,7 @@ MainView {
 
             delegate: ListItem.Standard {
                 text: model.display
+                progression: true
                 onClicked: {
                     pageStack.push(contactsDetailsPage)
                     contactsDetailsPage.headline=model.display
