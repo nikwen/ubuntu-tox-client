@@ -35,7 +35,7 @@ private:
     ToxBackend *backend;
     Tox *tox = nullptr;
 
-    QMap<int, Friend> friendMap;
+    QList<Friend> friendList;
 
     static void onFriendAction(Tox*/* tox*/, int friendId, const uint8_t *cMessage, uint16_t cMessageSize, void *model);
     static void onFriendNameChange(Tox* tox, int friendId, const uint8_t* cName, uint16_t cNameSize, void* model);

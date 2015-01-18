@@ -6,7 +6,7 @@
 
 ContactsModel::ContactsModel(QObject *parent) :
     QAbstractListModel(parent),
-    friendMap(QMap<int, Friend>())
+    friendList(QList<Friend>())
 {
     connect(this, &ContactsModel::backendChanged, this, &ContactsModel::init);
 }
@@ -30,7 +30,7 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     if (role == Qt::DisplayRole) {
-        Friend f = friendMap.values().at(index.row());
+        Friend f = friendList.at(index.row());
         return f.getName();
     }
     else
@@ -46,8 +46,8 @@ void ContactsModel::init() {
 
     qDebug() << "Getting friends...";
 
-    //Clear friend map
-    friendMap.clear();
+    //Clear friend list
+    friendList.clear();
 
     //Get friends
 
@@ -60,31 +60,34 @@ void ContactsModel::init() {
 
         //Create new friend objects for all retrieved friends
         for (int32_t i = 0; i < static_cast<int32_t>(friendCount); ++i) {
-            if (tox_get_client_id(tox, ids[i], clientId) == 0) {
+            int friendId = ids[i];
+
+            if (tox_get_client_id(tox, friendId, clientId) == 0) {
                 Friend f;
+                f.setFriendId(friendId);
 
                 //Get the friend's name
-                const int nameSize = tox_get_name_size(tox, ids[i]);
+                const int nameSize = tox_get_name_size(tox, friendId);
                 if (nameSize > 0) {
                     uint8_t *name = new uint8_t[nameSize];
-                    if (tox_get_name(tox, ids[i], name) == nameSize) {
+                    if (tox_get_name(tox, friendId, name) == nameSize) {
                         f.setName(CString::toString(name, nameSize));
                     }
                     delete[] name;
                 }
 
                 //Get the friend's status message
-                const int statusMessageSize = tox_get_status_message_size(tox, ids[i]);
+                const int statusMessageSize = tox_get_status_message_size(tox, friendId);
                 if (statusMessageSize > 0) {
                     uint8_t *statusMessage = new uint8_t[statusMessageSize];
-                    if (tox_get_status_message(tox, ids[i], statusMessage, statusMessageSize) == statusMessageSize) {
+                    if (tox_get_status_message(tox, friendId, statusMessage, statusMessageSize) == statusMessageSize) {
                         f.setStatusMessage(CString::toString(statusMessage, statusMessageSize));
                     }
                     delete[] statusMessage;
                 }
 
-                //Add friend to friend map
-                friendMap[ids[i]] = f;
+                //Add friend to friend list
+                friendList << f;
             }
         }
         delete[] ids;
@@ -101,18 +104,46 @@ void ContactsModel::init() {
 }
 
 void ContactsModel::setFriendName(int id, QString name) {
-    Friend f = friendMap[id];
+    //Get friend with given id from friend list
+    Friend f; int i;
+    for (i = 0; i < friendList.size(); i++) {
+        f = friendList[i];
+        if (f.getFriendId() == id) {
+            break;
+        }
+    }
+
+    if (i >= friendList.size())
+        return;
+
+    //Set name and replace in list
     f.setName(name);
-    friendMap[id] = f;
-    QModelIndex updateIndex = index(0, 0, QModelIndex()); //TODO: Currently only works with one contact, find out real index!!!
+    friendList[i] = f;
+
+    //Notify ListView of changes
+    QModelIndex updateIndex = index(i, 0, QModelIndex());
     emit dataChanged(updateIndex, updateIndex);
 }
 
 void ContactsModel::setFriendStatusMessage(int id, QString message) {
-    Friend f = friendMap[id];
+    //Get friend with given id from friend list
+    Friend f; int i;
+    for (i = 0; i < friendList.size(); i++) {
+        f = friendList[i];
+        if (f.getFriendId() == id) {
+            break;
+        }
+    }
+
+    if (i >= friendList.size())
+        return;
+
+    //Set name and replace in list
     f.setStatusMessage(message);
-    friendMap[id] = f;
-    QModelIndex updateIndex = index(0, 0, QModelIndex()); //TODO: Currently only works with one contact, find out real index!!!
+    friendList[i] = f;
+
+    //Notify ListView of changes
+    QModelIndex updateIndex = index(i, 0, QModelIndex());
     emit dataChanged(updateIndex, updateIndex);
 }
 

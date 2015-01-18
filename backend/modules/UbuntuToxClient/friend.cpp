@@ -8,6 +8,7 @@ Friend::Friend() :
 
 Friend::Friend(const Friend& f)
 {
-    this->name = f.name;
-    this->statusMessage = f.statusMessage;
+    setFriendId(f.friendId);
+    setName(f.name);
+    setStatusMessage(f.statusMessage);
 }
