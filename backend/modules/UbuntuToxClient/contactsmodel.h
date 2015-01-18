@@ -33,6 +33,9 @@ public slots:
 
     void addFriendToModel(int friendId, const QString& userId);
 
+protected:
+    QHash<int, QByteArray> roleNames() const;
+
 private:
     ToxBackend *backend;
     Tox *tox = nullptr;
@@ -42,6 +45,11 @@ private:
     static void onFriendAction(Tox*/* tox*/, int friendId, const uint8_t *cMessage, uint16_t cMessageSize, void *model);
     static void onFriendNameChange(Tox* tox, int friendId, const uint8_t* cName, uint16_t cNameSize, void* model);
     static void onFriendStatusMessageChanged(Tox* tox, int friendId, const uint8_t* cMessage, uint16_t cMessageSize, void* model);
+
+    enum Roles {
+        StatusMessageRole = Qt::UserRole+100,
+    };
+
 
 };
 

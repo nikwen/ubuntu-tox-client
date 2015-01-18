@@ -164,8 +164,9 @@ MainView {
                 toxBackend: backend
             }
 
-            delegate: ListItem.Standard {
-                text: model.display
+            delegate: ListItem.Subtitled {
+                text: model.name
+                subText: model.statusMessage
                 progression: true
                 onClicked: {
                     pageStack.push(contactsDetailsPage)

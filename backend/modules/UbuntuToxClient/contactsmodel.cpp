@@ -19,6 +19,13 @@ int ContactsModel::rowCount(const QModelIndex &parent) const {
     return friendList.size();
 }
 
+QHash<int, QByteArray> ContactsModel::roleNames() const {
+    QHash<int, QByteArray> roles;
+    roles[Qt::DisplayRole] = "name";
+    roles[ContactsModel::StatusMessageRole] = "statusMessage";
+    return roles;
+}
+
 QVariant ContactsModel::data(const QModelIndex &index, int role) const
 {
     if (tox == nullptr)
@@ -30,13 +37,18 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
     if (index.row() >= tox_count_friendlist(tox))
         return QVariant();
 
-    if (role == Qt::DisplayRole) {
-        Friend f = friendList.at(index.row());
+    Friend f = friendList.at(index.row());
+
+    switch (role) {
+    case Qt::DisplayRole: {
         QString name = f.getName();
         return (name.size() != 0) ? name : f.getClientId();
     }
-    else
+    case ContactsModel::StatusMessageRole:
+        return f.getStatusMessage();
+    default:
         return QVariant();
+    }
 }
 
 void ContactsModel::init() {
@@ -61,7 +73,7 @@ void ContactsModel::init() {
 
         //Create new friend objects for all retrieved friends
         for (int32_t i = 0; i < static_cast<int32_t>(friendCount); ++i) {
-            addFriendToModel(ids[i], ""); //TODO: User-ID
+            addFriendToModel(ids[i], "");
         }
         delete[] ids;
     }
