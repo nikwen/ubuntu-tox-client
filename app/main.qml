@@ -322,7 +322,10 @@ MainView {
 
         onConnectedChanged: console.log(connected ? "Connected" : "Disconnected")
 
-        Component.onDestruction: backend.cleanUpOnClose()
+        Component.onDestruction: {
+            console.log("ToxBackend: Component.onDestruction received")
+            backend.cleanUpOnClose()
+        }
 
         onFriendRequestReceived: {
             console.log("Incoming friend request :)")
