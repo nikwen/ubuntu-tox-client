@@ -278,7 +278,6 @@ MainView {
 
         onFriendRequestReceived: {
             console.log("Incoming friend request :)")
-            console.log("User-ID:", userId)
             friendRequestLabel.userId = userId
             friendRequestLabel.message = message
             addFriendResultLabel.userId = ""
@@ -286,10 +285,6 @@ MainView {
         }
 
         onFriendAdded: {
-            console.log("Added friend :)")
-            console.log("Friend-ID:", friendId)
-            console.log("User-ID:", userId)
-
             friendRequestLabel.userId = ""
             friendRequestLabel.message = ""
             addFriendResultLabel.userId = userId
@@ -297,9 +292,6 @@ MainView {
         }
 
         onFailedToAddFriend: {
-            console.log("Failed to add friend :(")
-            console.log("User-ID:", userId)
-
             friendRequestLabel.userId = ""
             friendRequestLabel.message = ""
             addFriendResultLabel.userId = userId

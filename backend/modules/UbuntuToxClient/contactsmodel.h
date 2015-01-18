@@ -31,6 +31,8 @@ public slots:
     void setFriendName(int id, QString name);
     void setFriendStatusMessage(int id, QString message);
 
+    void addFriendToModel(int friendId, const QString& userId);
+
 private:
     ToxBackend *backend;
     Tox *tox = nullptr;

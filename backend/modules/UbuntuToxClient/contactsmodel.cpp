@@ -15,7 +15,7 @@ int ContactsModel::rowCount(const QModelIndex &parent) const {
     if (tox == nullptr)
         return 0;
 
-    return tox_count_friendlist(tox);
+    return friendList.size();
 }
 
 QVariant ContactsModel::data(const QModelIndex &index, int role) const
@@ -56,39 +56,10 @@ void ContactsModel::init() {
         //Get the list of friend ids
         int32_t *ids = new int32_t[friendCount];
         tox_get_friendlist(tox, ids, friendCount);
-        uint8_t clientId[TOX_CLIENT_ID_SIZE];
 
         //Create new friend objects for all retrieved friends
         for (int32_t i = 0; i < static_cast<int32_t>(friendCount); ++i) {
-            int friendId = ids[i];
-
-            if (tox_get_client_id(tox, friendId, clientId) == 0) {
-                Friend f;
-                f.setFriendId(friendId);
-
-                //Get the friend's name
-                const int nameSize = tox_get_name_size(tox, friendId);
-                if (nameSize > 0) {
-                    uint8_t *name = new uint8_t[nameSize];
-                    if (tox_get_name(tox, friendId, name) == nameSize) {
-                        f.setName(CString::toString(name, nameSize));
-                    }
-                    delete[] name;
-                }
-
-                //Get the friend's status message
-                const int statusMessageSize = tox_get_status_message_size(tox, friendId);
-                if (statusMessageSize > 0) {
-                    uint8_t *statusMessage = new uint8_t[statusMessageSize];
-                    if (tox_get_status_message(tox, friendId, statusMessage, statusMessageSize) == statusMessageSize) {
-                        f.setStatusMessage(CString::toString(statusMessage, statusMessageSize));
-                    }
-                    delete[] statusMessage;
-                }
-
-                //Add friend to friend list
-                friendList << f;
-            }
+            addFriendToModel(ids[i], ""); //TODO: User-ID
         }
         delete[] ids;
     }
@@ -97,6 +68,8 @@ void ContactsModel::init() {
 
     connect(this, &ContactsModel::friendNameChanged, this, &ContactsModel::setFriendName);
     connect(this, &ContactsModel::friendStatusMessageChanged, this, &ContactsModel::setFriendStatusMessage);
+
+    connect(backend, &ToxBackend::friendAdded, this, &ContactsModel::addFriendToModel);
 
     tox_callback_friend_action(tox, onFriendAction, this);
     tox_callback_name_change(tox, onFriendNameChange, this);
@@ -157,4 +130,42 @@ void ContactsModel::onFriendNameChange(Tox*/* tox*/, int friendId, const uint8_t
 
 void ContactsModel::onFriendStatusMessageChanged(Tox*/* tox*/, int friendId, const uint8_t* cMessage, uint16_t cMessageSize, void* model) {
     emit static_cast<ContactsModel*>(model)->friendStatusMessageChanged(friendId, CString::toString(cMessage, cMessageSize));
+}
+
+void ContactsModel::addFriendToModel(int friendId, const QString &userId) {
+    uint8_t clientId[TOX_CLIENT_ID_SIZE];
+
+    if (tox_get_client_id(tox, friendId, clientId) == 0) {
+        Friend f;
+        f.setFriendId(friendId);
+
+        //Get the friend's name
+        const int nameSize = tox_get_name_size(tox, friendId);
+        if (nameSize > 0) {
+            uint8_t *name = new uint8_t[nameSize];
+            if (tox_get_name(tox, friendId, name) == nameSize) {
+                f.setName(CString::toString(name, nameSize));
+            }
+            delete[] name;
+        }
+
+        //Get the friend's status message
+        const int statusMessageSize = tox_get_status_message_size(tox, friendId);
+        if (statusMessageSize > 0) {
+            uint8_t *statusMessage = new uint8_t[statusMessageSize];
+            if (tox_get_status_message(tox, friendId, statusMessage, statusMessageSize) == statusMessageSize) {
+                f.setStatusMessage(CString::toString(statusMessage, statusMessageSize));
+            }
+            delete[] statusMessage;
+        }
+
+        beginInsertRows(QModelIndex(), rowCount(), rowCount());
+
+        //Add friend to friend list
+        friendList << f;
+
+        endInsertRows();
+
+        qDebug() << "Added friend";
+    }
 }
