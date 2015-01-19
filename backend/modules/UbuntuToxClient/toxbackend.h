@@ -48,13 +48,29 @@ public slots:
     QString getOwnStatusMessage();
     bool isConnected() { return m_connected; }
 
+    QString getFriendUserId(int friendNumber) const;
+    bool hasFriendWithPublicKey(const QString &publicKey) const;
+    bool hasFriendWithAddress(const QString &address) const;
+
     void setUserName(const QString& name);
     void setStatusMessage(const QString& message);
 
     void acceptFriendRequest(const QString& userId);
+    void sendFriendRequest(const QString& userId, const QString& message);
 
+    qint16 getFriendAddressSize() { return TOX_FRIEND_ADDRESS_SIZE * 2; }
     qint16 getMaximumUserNameLength() { return TOX_MAX_NAME_LENGTH; }
     qint16 getMaximumStatusMessageLength() { return TOX_MAX_STATUSMESSAGE_LENGTH; }
+    qint16 getMaximumFriendRequestLength() { return TOX_MAX_FRIENDREQUEST_LENGTH; }
+
+    qint16 getFAErrTooLong() { return TOX_FAERR_TOOLONG; }
+    qint16 getFAErrNoMessage() { return TOX_FAERR_NOMESSAGE; }
+    qint16 getFAErrOwnKey() { return TOX_FAERR_OWNKEY; }
+    qint16 getFAErrAlreadySent() { return TOX_FAERR_ALREADYSENT; }
+    qint16 getFAErrUnknown() { return TOX_FAERR_UNKNOWN; }
+    qint16 getFAErrBadChecksum() { return TOX_FAERR_BADCHECKSUM; }
+    qint16 getFAErrSetNewNospam() { return TOX_FAERR_SETNEWNOSPAM; }
+    qint16 getFAErrNoMem() { return TOX_FAERR_NOMEM; }
 
     //SIGTERM handling
     void handleSigTerm();
@@ -74,7 +90,7 @@ signals:
     void friendRequestReceived(const QString& userId, const QString& message);
 
     void friendAdded(int friendId, const QString& userId);
-    void failedToAddFriend(const QString& userId, const QString& errorInfo = QString());
+    void failedToAddFriend(const QString& userId, const qint16 errorCode = 0);
 
 private:
     Tox *tox;

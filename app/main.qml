@@ -19,6 +19,7 @@
 
 import QtQuick 2.3
 import Ubuntu.Components 1.1
+import Ubuntu.Components.Popups 1.0
 import Ubuntu.Components.ListItems 1.0 as ListItem
 import Ubuntu.Components.Themes.Ambiance 0.1
 import UbuntuToxClient 1.0
@@ -112,7 +113,7 @@ MainView {
                 text: backend.connected ? i18n.tr("You are connected to the DHT") : i18n.tr("You are <b>not</b> connected to the DHT")
             }
 
-            Label {
+            Label { //TODO: Better solution for friendship requests!
                 id: friendRequestLabel
                 width: parent.width
                 wrapMode: Text.Wrap
@@ -154,6 +155,16 @@ MainView {
         title: i18n.tr("Contacts")
         visible: false
 
+        head.actions: [
+            Action {
+                id: addFriendAction
+                iconName: "add"
+                text: "Add friend"
+
+                onTriggered: pageStack.push(addFriendPage)
+            }
+        ]
+
         ListView {
             id: contactsListView
             height: parent.height
@@ -173,6 +184,170 @@ MainView {
                     contactsDetailsPage.headline=model.display
                 }
             }
+        }
+    }
+
+    Page {
+        id: addFriendPage
+        visible: false
+
+        title: i18n.tr("Add a friend")
+
+        head.actions: [
+            Action {
+                id: confirmAddFriendAction
+                iconName: "ok"
+                text: i18n.tr("Add friend")
+
+                onTriggered: {
+                    var message = (friendMessageTextField.text.length > 0) ? friendMessageTextField.text : friendMessageTextField.placeholderText
+                    backend.sendFriendRequest(friendAddressTextField.text, message)
+                }
+            }
+        ]
+
+        head.backAction: Action {
+            id: cancelAddFriendAction
+            iconName: "close"
+            text: i18n.tr("Cancel")
+
+            onTriggered: {
+                //Clear text fields
+                friendAddressTextField.text = ""
+                friendMessageTextField.text = ""
+
+                pageStack.pop()
+            }
+        }
+
+        Column {
+            anchors.fill: parent
+            spacing: units.gu(1)
+
+            ListItem.Header {
+                text: i18n.tr("Tox ID:")
+            }
+
+            TextField {
+                id: friendAddressTextField
+                maximumLength: backend.getFriendAddressSize()
+
+                anchors {
+                    right: parent.right
+                    left: parent.left
+                    rightMargin: units.gu(2)
+                    leftMargin: units.gu(2)
+                }
+
+                style: TextFieldStyle {
+                    background: Item {}
+                }
+
+                KeyNavigation.priority: KeyNavigation.BeforeItem
+                KeyNavigation.tab: friendMessageTextField
+            }
+
+            ListItem.Header {
+                text: i18n.tr("Message:")
+            }
+
+            TextField {
+                id: friendMessageTextField
+                maximumLength: backend.getMaximumFriendRequestLength()
+                placeholderText: i18n.tr("Let's tox!")
+
+                anchors {
+                    right: parent.right
+                    left: parent.left
+                    rightMargin: units.gu(2)
+                    leftMargin: units.gu(2)
+                }
+
+                style: TextFieldStyle {
+                    background: Item {}
+                }
+
+                KeyNavigation.priority: KeyNavigation.BeforeItem
+                KeyNavigation.backtab: friendAddressTextField
+            }
+
+            Connections {
+                target: backend
+
+                onFriendAdded: {
+                    if (pageStack.currentPage === addFriendPage) {
+                        //Clear text fields
+                        friendAddressTextField.text = ""
+                        friendMessageTextField.text = ""
+
+                        pageStack.pop()
+                    }
+                }
+
+                onFailedToAddFriend: {
+                    if (pageStack.currentPage === addFriendPage) {
+                        console.log("Error while adding friend:", errorCode)
+                        var dialog = PopupUtils.open(addFriendErrorDialog)
+                        dialog.errorCode = errorCode
+                    }
+                }
+            }
+        }
+
+        Component {
+             id: addFriendErrorDialog
+
+             Dialog {
+                 id: dialog
+                 title: getTitleForErrorCode(errorCode)
+                 text: getTextForErrorCode(errorCode)
+
+                 property int errorCode: 0
+
+                 onErrorCodeChanged: console.log(errorCode)
+
+                 function getTitleForErrorCode(errorCode) {
+                     if (errorCode === backend.getFAErrSetNewNospam()) {
+                         return i18n.tr("Updated nospam value")
+                     } else {
+                         return i18n.tr("Failed to add friend")
+                     }
+                 }
+
+                 function getTextForErrorCode(errorCode) {
+                     switch (errorCode) {
+                     case backend.getFAErrTooLong():
+                         return i18n.tr("The entered message is too long!")
+                     case backend.getFAErrNoMessage():
+                         return i18n.tr("No message has been entered!")
+                     case backend.getFAErrOwnKey():
+                         return i18n.tr("You cannot add yourself as a friend! ;)")
+                     case backend.getFAErrAlreadySent():
+                         return i18n.tr("You have already sent that user a friendship request!")
+                     case backend.getFAErrUnknown():
+                         return i18n.tr("Unknown error...")
+                     case backend.getFAErrBadChecksum():
+                         return i18n.tr("There is a checksum error in the entered Tox ID!")
+                     case backend.getFAErrSetNewNospam():
+                         return i18n.tr("The nospam value has been updated!")
+                     case backend.getFAErrNoMem():
+                         return i18n.tr("Increasing the friend list size has failed!")
+                     default:
+                         return ""
+                     }
+                 }
+
+                 Button {
+                     text: i18n.tr("OK")
+                     color: UbuntuColors.green
+                     onClicked: {
+                         PopupUtils.close(dialog)
+                         if (errorCode === backend.getFAErrSetNewNospam()) {
+                             pageStack.pop()
+                         }
+                     }
+                 }
+             }
         }
     }
 

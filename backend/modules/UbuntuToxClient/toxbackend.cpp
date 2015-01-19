@@ -179,6 +179,67 @@ void ToxBackend::acceptFriendRequest(const QString& userId) {
     }
 }
 
+void ToxBackend::sendFriendRequest(const QString &address, const QString &message) {
+    const QString userId = address.mid(0, TOX_CLIENT_ID_SIZE * 2);
+
+    if (hasFriendWithAddress(address)) { //TODO: Think about removing this as it is already handled by tox_add_friend
+        emit failedToAddFriend(userId, TOX_FAERR_ALREADYSENT);
+    } else {
+        CString cMessage(message);
+        int friendId = tox_add_friend(tox, CFriendAddress(address).data(), cMessage.data(), cMessage.size());
+        if (friendId < 0) {
+            emit failedToAddFriend(userId, friendId);
+        } else {
+            emit friendAdded(friendId, userId);
+        }
+    }
+
+    saveTox();
+}
+
+bool ToxBackend::hasFriendWithPublicKey(const QString &publicKey) const {
+    //Return if public key is too short
+    if (publicKey.length() != (TOX_CLIENT_ID_SIZE * 2)) {
+        return false;
+    }
+
+    const uint32_t friendCount = tox_count_friendlist(tox);
+
+    if (friendCount > 0) {
+        int32_t *ids = new int32_t[friendCount];
+        tox_get_friendlist(tox, ids, friendCount);
+
+        for (int32_t i = 0; i < static_cast<int32_t>(friendCount); ++i) {
+            QString friendUserId = getFriendUserId(ids[i]);
+            if (friendUserId.toUpper().startsWith(publicKey.toUpper())) {
+                delete[] ids;
+                return true;
+            }
+        }
+        delete[] ids;
+    }
+    return false;
+}
+
+QString ToxBackend::getFriendUserId(int friendNumber) const {
+    uint8_t rawid[TOX_CLIENT_ID_SIZE];
+    tox_get_client_id(tox, friendNumber, rawid);
+    QByteArray data((char*) rawid, TOX_CLIENT_ID_SIZE);
+    QString id = data.toHex().toUpper();
+
+    return id;
+}
+
+bool ToxBackend::hasFriendWithAddress(const QString &address) const {
+    //Return if address is too short
+    if (address.length() != (TOX_FRIEND_ADDRESS_SIZE * 2)) {
+        return false;
+    }
+
+    QString publicKey = address.left(TOX_CLIENT_ID_SIZE * 2);
+    return hasFriendWithPublicKey(publicKey);
+}
+
 void ToxBackend::setUserName(const QString& name) {
     CString cName(name);
     tox_set_name(tox, cName.data(), std::min((int) cName.size(), TOX_MAX_NAME_LENGTH));

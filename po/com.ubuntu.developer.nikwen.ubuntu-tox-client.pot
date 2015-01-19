@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-18 18:23+0100\n"
+"POT-Creation-Date: 2015-01-19 22:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,68 +17,132 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../app/main.qml:46
+#: ../app/main.qml:47
 msgid "Tox-Client"
 msgstr ""
 
-#: ../app/main.qml:52 ../app/main.qml:154
+#: ../app/main.qml:53 ../app/main.qml:155
 msgid "Contacts"
 msgstr ""
 
-#: ../app/main.qml:59
+#: ../app/main.qml:60
 msgid "About"
 msgstr ""
 
-#: ../app/main.qml:66 ../app/main.qml:222
+#: ../app/main.qml:67 ../app/main.qml:399
 msgid "Settings"
 msgstr ""
 
-#: ../app/main.qml:84
+#: ../app/main.qml:85
 msgid "Your Tox-ID is (click to copy):"
 msgstr ""
 
-#: ../app/main.qml:112
+#: ../app/main.qml:113
 msgid "You are connected to the DHT"
 msgstr ""
 
-#: ../app/main.qml:112
+#: ../app/main.qml:113
 msgid "You are <b>not</b> connected to the DHT"
 msgstr ""
 
-#: ../app/main.qml:123
+#: ../app/main.qml:124
 #, qt-format
 msgid "Incoming friend request from user %1<br>Message: %2"
 msgstr ""
 
-#: ../app/main.qml:133
+#: ../app/main.qml:134
 msgid "Accept friend request"
 msgstr ""
 
-#: ../app/main.qml:146
+#: ../app/main.qml:147
 msgid "Added friend successfully! :)"
 msgstr ""
 
-#: ../app/main.qml:146
+#: ../app/main.qml:147
 msgid "Failed to add friend! :("
 msgstr ""
 
-#: ../app/main.qml:179
-msgid "Chat with "
+#: ../app/main.qml:194
+msgid "Add a friend"
 msgstr ""
 
-#: ../app/main.qml:230
-msgid "Save"
+#: ../app/main.qml:200
+msgid "Add friend"
 msgstr ""
 
-#: ../app/main.qml:243
+#: ../app/main.qml:212 ../app/main.qml:420
 msgid "Cancel"
 msgstr ""
 
-#: ../app/main.qml:267
+#: ../app/main.qml:228
+msgid "Tox ID:"
+msgstr ""
+
+#: ../app/main.qml:251
+msgid "Message:"
+msgstr ""
+
+#: ../app/main.qml:257
+msgid "Let's tox!"
+msgstr ""
+
+#: ../app/main.qml:311
+msgid "Updated nospam value"
+msgstr ""
+
+#: ../app/main.qml:313
+msgid "Failed to add friend"
+msgstr ""
+
+#: ../app/main.qml:320
+msgid "The entered message is too long!"
+msgstr ""
+
+#: ../app/main.qml:322
+msgid "No message has been entered!"
+msgstr ""
+
+#: ../app/main.qml:324
+msgid "You cannot add yourself as a friend! ;)"
+msgstr ""
+
+#: ../app/main.qml:326
+msgid "You have already sent that user a friendship request!"
+msgstr ""
+
+#: ../app/main.qml:328
+msgid "Unknown error..."
+msgstr ""
+
+#: ../app/main.qml:330
+msgid "There is a checksum error in the entered Tox ID!"
+msgstr ""
+
+#: ../app/main.qml:332
+msgid "The nospam value has been updated!"
+msgstr ""
+
+#: ../app/main.qml:334
+msgid "Increasing the friend list size has failed!"
+msgstr ""
+
+#: ../app/main.qml:341
+msgid "OK"
+msgstr ""
+
+#: ../app/main.qml:356
+msgid "Chat with "
+msgstr ""
+
+#: ../app/main.qml:407
+msgid "Save"
+msgstr ""
+
+#: ../app/main.qml:444
 msgid "User name:"
 msgstr ""
 
-#: ../app/main.qml:290
+#: ../app/main.qml:467
 msgid "Status message:"
 msgstr ""
 
@@ -130,6 +194,6 @@ msgstr ""
 msgid "Uses code from the following projects:"
 msgstr ""
 
-#: /home/robbe/Programmieren/Ubuntu/build-ubuntu-tox-client-Desktop-Default/po/ubuntu-tox-client.desktop.in.h:1
+#: /home/nikwen/Programmieren/Ubuntu/build-ubuntu-tox-client-Desktop-Default/po/ubuntu-tox-client.desktop.in.h:1
 msgid "ubuntu-tox-client"
 msgstr ""
