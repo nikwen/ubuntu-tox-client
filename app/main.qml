@@ -231,6 +231,7 @@ MainView {
             TextField {
                 id: friendAddressTextField
                 maximumLength: backend.getFriendAddressSize()
+                placeholderText: i18n.tr("Your friend's Tox ID")
 
                 anchors {
                     right: parent.right
