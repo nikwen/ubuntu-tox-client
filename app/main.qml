@@ -181,7 +181,7 @@ MainView {
                 progression: true
                 onClicked: {
                     pageStack.push(contactsDetailsPage)
-                    contactsDetailsPage.headline=model.display
+                    contactsDetailsPage.headline=model.name
                 }
             }
         }
