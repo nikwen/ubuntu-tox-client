@@ -359,18 +359,21 @@ MainView {
         anchors.fill: parent
         property string headline: ""
 
-            ListModel {
+                ListModel {
                 id: exampleListModel
 
                 ListElement {
+                    sender: "person A"
                     name: "Hey"
                     timestamp: "17:30:34"
                     }
                 ListElement {
+                    sender: "Person B"
                     name: "How are you?"
                     timestamp: "17:35:30"
                     }
                 ListElement {
+                    sender: "Person A"
                     name: "I'm fine."
                     timestamp: "17:39:04"
                     }
@@ -383,15 +386,44 @@ MainView {
                 height: parent.height
                 width: parent.width
                 model: exampleListModel
-                clip: true
 
-                delegate: ListItem.Standard {
-                   text: timestamp + "  " + name
+                delegate: UbuntuShape {
+                          color: "lightgrey"
+                          height: timestampLabel.height+textLabel.height+senderLabel.height
+                          width: parent.width
+
+                          Row {
+                              id: headerRow
+                              spacing: units.gu(3)
+
+                            Label {
+                                id: timestampLabel
+                                text: timestamp
+                                wrapMode: Text.WordWrap
+                            }
+                            Label {
+                                id: senderLabel
+                                text: sender
+                                wrapMode: Text.WordWrap
+                            }
+                          }
+
+                          Label {
+                              id: textLabel
+                              text: name
+                              wrapMode: Text.WordWrap
+                              anchors {
+                                  top: headerRow.bottom
+                              }
+                         }
                 }
-            }
+
+           }
+
+       }
 
 
-    }
+
 
     Page {
         id: settingsPage

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-19 22:48+0100\n"
+"POT-Creation-Date: 2015-01-21 20:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: ../app/main.qml:67 ../app/main.qml:399
+#: ../app/main.qml:67 ../app/main.qml:438
 msgid "Settings"
 msgstr ""
 
@@ -70,7 +70,7 @@ msgstr ""
 msgid "Add friend"
 msgstr ""
 
-#: ../app/main.qml:212 ../app/main.qml:420
+#: ../app/main.qml:212 ../app/main.qml:459
 msgid "Cancel"
 msgstr ""
 
@@ -78,71 +78,75 @@ msgstr ""
 msgid "Tox ID:"
 msgstr ""
 
-#: ../app/main.qml:251
+#: ../app/main.qml:234
+msgid "Your friend's Tox ID"
+msgstr ""
+
+#: ../app/main.qml:252
 msgid "Message:"
 msgstr ""
 
-#: ../app/main.qml:257
+#: ../app/main.qml:258
 msgid "Let's tox!"
 msgstr ""
 
-#: ../app/main.qml:311
+#: ../app/main.qml:312
 msgid "Updated nospam value"
 msgstr ""
 
-#: ../app/main.qml:313
+#: ../app/main.qml:314
 msgid "Failed to add friend"
 msgstr ""
 
-#: ../app/main.qml:320
+#: ../app/main.qml:321
 msgid "The entered message is too long!"
 msgstr ""
 
-#: ../app/main.qml:322
+#: ../app/main.qml:323
 msgid "No message has been entered!"
 msgstr ""
 
-#: ../app/main.qml:324
+#: ../app/main.qml:325
 msgid "You cannot add yourself as a friend! ;)"
 msgstr ""
 
-#: ../app/main.qml:326
+#: ../app/main.qml:327
 msgid "You have already sent that user a friendship request!"
 msgstr ""
 
-#: ../app/main.qml:328
+#: ../app/main.qml:329
 msgid "Unknown error..."
 msgstr ""
 
-#: ../app/main.qml:330
+#: ../app/main.qml:331
 msgid "There is a checksum error in the entered Tox ID!"
 msgstr ""
 
-#: ../app/main.qml:332
+#: ../app/main.qml:333
 msgid "The nospam value has been updated!"
 msgstr ""
 
-#: ../app/main.qml:334
+#: ../app/main.qml:335
 msgid "Increasing the friend list size has failed!"
 msgstr ""
 
-#: ../app/main.qml:341
+#: ../app/main.qml:342
 msgid "OK"
 msgstr ""
 
-#: ../app/main.qml:356
+#: ../app/main.qml:357
 msgid "Chat with "
 msgstr ""
 
-#: ../app/main.qml:407
+#: ../app/main.qml:446
 msgid "Save"
 msgstr ""
 
-#: ../app/main.qml:444
+#: ../app/main.qml:483
 msgid "User name:"
 msgstr ""
 
-#: ../app/main.qml:467
+#: ../app/main.qml:506
 msgid "Status message:"
 msgstr ""
 
@@ -194,6 +198,6 @@ msgstr ""
 msgid "Uses code from the following projects:"
 msgstr ""
 
-#: /home/nikwen/Programmieren/Ubuntu/build-ubuntu-tox-client-Desktop-Default/po/ubuntu-tox-client.desktop.in.h:1
+#: /home/robbe/Programmieren/Ubuntu/build-ubuntu-tox-client-Desktop-Default/po/ubuntu-tox-client.desktop.in.h:1
 msgid "ubuntu-tox-client"
 msgstr ""
