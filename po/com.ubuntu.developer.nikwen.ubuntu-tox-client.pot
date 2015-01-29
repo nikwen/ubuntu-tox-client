@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-29 17:44+0100\n"
+"POT-Creation-Date: 2015-01-29 19:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,36 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ../app/dataUtils.js:44
+msgid "Today"
+msgstr ""
+
+#: ../app/dataUtils.js:46
+msgid "Yesterday"
+msgstr ""
+
+#: ../app/dataUtils.js:65
+#, qt-format
+msgid "%1 hour call"
+msgid_plural "%1 hours call"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../app/dataUtils.js:67
+#, qt-format
+msgid "%1 minute call"
+msgid_plural "%1 minutes call"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../app/dataUtils.js:69
+#, qt-format
+msgid "%1 second call"
+msgid_plural "%1 seconds call"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../app/main.qml:47
 msgid "Tox-Client"
