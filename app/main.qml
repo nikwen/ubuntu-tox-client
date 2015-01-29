@@ -377,19 +377,44 @@ MainView {
                     name: "I'm fine."
                     timestamp: "17:39:04"
                     }
+                ListElement {
+                    sender: "Person A"
+                    name: "I'm fine."
+                    timestamp: "17:39:04"
+                    }
+                ListElement {
+                    sender: "Person A"
+                    name: "I'm fine."
+                    timestamp: "17:39:04"
+                    }
+                ListElement {
+                    sender: "Person A"
+                    name: "I'm fine."
+                    timestamp: "17:39:04"
+                    }
+                ListElement {
+                    sender: "Person A"
+                    name: "I'm fine."
+                    timestamp: "17:39:04"
+                    }
 
             }
 
             ListView {
                 id: exampleListView
-                anchors.fill: parent
-                height: parent.height
+
+                height: parent.height-messageColumn.height-units.gu(5)
                 width: parent.width
                 model: exampleListModel
+                anchors {
+                    bottom: messageColumn.top
+                    top: contactsDetailsPage.top
+                }
+
 
                 delegate: UbuntuShape {
                           color: "lightgrey"
-                          height: timestampLabel.height+textLabel.height+senderLabel.height
+                          height: timestampLabel.height+textLabel.height+units.gu(2)
                           width: parent.width
 
                           Row {
@@ -415,10 +440,57 @@ MainView {
                               anchors {
                                   top: headerRow.bottom
                               }
+
                          }
+
+                }
+             }
+
+            Column {
+                id: messageColumn
+                width: parent.width
+                spacing: units.gu(2)
+                anchors {
+                    bottom: parent.bottom
                 }
 
-           }
+                ListItem.Header {
+                    text: i18n.tr("New Message:")
+                }
+
+                Row {
+
+                    id: messageRow
+                    width: messageColumn.width
+                    spacing: units.gu(2)
+                    anchors.margins: units.gu(2)
+
+
+                    TextArea {
+                        id: newMessageTextField
+                        placeholderText: i18n.tr("Your message")
+                        width: messageRow.width-units.gu(8)
+                        height: units.gu(20)
+
+                        style: TextFieldStyle {
+                            color: "grey"
+                        }
+
+                        KeyNavigation.priority: KeyNavigation.BeforeItem
+                        KeyNavigation.tab: newMessageTextField
+                    }
+
+                    Button {
+                        id: sendOwnMessageButton
+                        color: UbuntuColors.green
+                        iconName: "ok"
+                        height:units.gu(3)
+                        width: units.gu(3)
+
+                    }
+                }
+            }
+
 
        }
 

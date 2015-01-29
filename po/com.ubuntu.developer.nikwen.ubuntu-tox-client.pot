@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-21 20:39+0100\n"
+"POT-Creation-Date: 2015-01-29 17:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: ../app/main.qml:67 ../app/main.qml:438
+#: ../app/main.qml:67 ../app/main.qml:504
 msgid "Settings"
 msgstr ""
 
@@ -70,7 +70,7 @@ msgstr ""
 msgid "Add friend"
 msgstr ""
 
-#: ../app/main.qml:212 ../app/main.qml:459
+#: ../app/main.qml:212 ../app/main.qml:525
 msgid "Cancel"
 msgstr ""
 
@@ -138,15 +138,23 @@ msgstr ""
 msgid "Chat with "
 msgstr ""
 
-#: ../app/main.qml:446
+#: ../app/main.qml:458
+msgid "New Message:"
+msgstr ""
+
+#: ../app/main.qml:471
+msgid "Your message"
+msgstr ""
+
+#: ../app/main.qml:512
 msgid "Save"
 msgstr ""
 
-#: ../app/main.qml:483
+#: ../app/main.qml:549
 msgid "User name:"
 msgstr ""
 
-#: ../app/main.qml:506
+#: ../app/main.qml:572
 msgid "Status message:"
 msgstr ""
 
