@@ -2,11 +2,13 @@
 
 #include <QDebug>
 
+#include <typeinfo>
+
 #include "cstring.h"
 #include "cdata.h"
 
 ContactsModel::ContactsModel(QObject *parent) :
-    QAbstractListModel(parent),
+    QAbstractItemModel(parent),
     friendList(QList<Friend>())
 {
     connect(this, &ContactsModel::backendChanged, this, &ContactsModel::init);
@@ -16,7 +18,51 @@ int ContactsModel::rowCount(const QModelIndex &parent) const {
     if (tox == nullptr)
         return 0;
 
-    return friendList.size();
+    if (parent == QModelIndex()) {
+        return friendList.size();
+    } else {
+        return friendList.at(parent.row()).getMessageCount();
+    }
+}
+
+int ContactsModel::columnCount(const QModelIndex &parent) const {
+    return 1;
+}
+
+Qt::ItemFlags ContactsModel::flags(const QModelIndex &index) const {
+    return Qt::ItemIsEnabled;
+}
+
+QVariant ContactsModel::headerData(int section, Qt::Orientation orientation, int role) const {
+    return QVariant();
+}
+
+QModelIndex ContactsModel::index(int row, int column, const QModelIndex &parent) const {
+    if (!hasIndex(row, column, parent))
+        return QModelIndex();
+
+    void *parentPointer = parent.internalPointer();
+    if (parentPointer == 0) { //i.e. current element is a friend
+        Friend f = Friend(friendList.at(row));
+        return createIndex(row, column, &f);
+    } else { //i.e. current element is a message
+        Friend *parentItem = static_cast<Friend*>(parentPointer);
+        Message m = parentItem->getMessage(row);
+        return createIndex(row, column, &m);
+    }
+}
+
+QModelIndex ContactsModel::parent(const QModelIndex &child) const {
+    if (!child.isValid())
+        return QModelIndex();
+
+    TypeIdBaseClass *childItem = static_cast<TypeIdBaseClass*>(child.internalPointer());
+    if (typeid(childItem).name() == "P6Friend") { //i.e. current element is a friend
+        return QModelIndex();
+    } else { //i.e. current element is a message
+        Message *childMessage = static_cast<Message*>(childItem); //TODO: Check if this works!
+        return createIndex(friendList.indexOf(*childMessage->getParentFriend()), 0, childMessage->getParentFriend());
+    }
 }
 
 QHash<int, QByteArray> ContactsModel::roleNames() const {
@@ -26,15 +72,14 @@ QHash<int, QByteArray> ContactsModel::roleNames() const {
     return roles;
 }
 
-QVariant ContactsModel::data(const QModelIndex &index, int role) const
-{
+QVariant ContactsModel::data(const QModelIndex &index, int role) const {
     if (tox == nullptr)
         return QVariant();
 
     if (!index.isValid())
         return QVariant();
 
-    if (index.row() >= tox_count_friendlist(tox))
+    if (index.row() >= friendList.count())
         return QVariant();
 
     Friend f = friendList.at(index.row());

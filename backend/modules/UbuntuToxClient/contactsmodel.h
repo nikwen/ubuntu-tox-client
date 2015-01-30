@@ -1,13 +1,13 @@
 #ifndef CONTACTSMODEL_H
 #define CONTACTSMODEL_H
 
-#include <QAbstractListModel>
+#include <QAbstractItemModel>
 
 #include "tox/tox.h"
 #include "toxbackend.h"
 #include "friend.h"
 
-class ContactsModel : public QAbstractListModel
+class ContactsModel : public QAbstractItemModel
 {
     Q_OBJECT
     Q_PROPERTY(ToxBackend *toxBackend MEMBER backend NOTIFY backendChanged)
@@ -16,7 +16,12 @@ public:
     explicit ContactsModel(QObject *parent = 0);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
+    Qt::ItemFlags flags(const QModelIndex &index) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    QModelIndex index(int row, int column, const QModelIndex &parent) const;
+    QModelIndex parent(const QModelIndex &child) const;
 
 signals:
     void backendChanged();
@@ -49,7 +54,6 @@ private:
     enum Roles {
         StatusMessageRole = Qt::UserRole+100,
     };
-
 
 };
 

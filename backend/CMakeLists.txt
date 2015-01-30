@@ -15,6 +15,8 @@ set(
     modules/UbuntuToxClient/cstring.cpp
     modules/UbuntuToxClient/contactsmodel.cpp
     modules/UbuntuToxClient/friend.cpp
+    modules/UbuntuToxClient/message.cpp
+    modules/UbuntuToxClient/typeidbaseclass.cpp
     modules/UbuntuToxClient/bootstrapnodes.h
 )
 
