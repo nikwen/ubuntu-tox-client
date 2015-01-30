@@ -97,7 +97,7 @@ Page {
             ListItem.Standard {
                 text: "Niklas Wenzel"
                 control: Label {
-                    text: i18n.tr("Maintainer")
+                    text: i18n.tr("Maintainer:")
                 }
             }
 

@@ -159,7 +159,7 @@ MainView {
             Action {
                 id: addFriendAction
                 iconName: "add"
-                text: "Add friend"
+                text: i18n.tr("Add a friend")
 
                 onTriggered: pageStack.push(addFriendPage)
             }
@@ -197,7 +197,7 @@ MainView {
             Action {
                 id: confirmAddFriendAction
                 iconName: "ok"
-                text: i18n.tr("Add friend")
+                text: i18n.tr("Add a friend")
 
                 onTriggered: {
                     var message = (friendMessageTextField.text.length > 0) ? friendMessageTextField.text : friendMessageTextField.placeholderText
