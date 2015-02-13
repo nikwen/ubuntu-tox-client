@@ -20,87 +20,183 @@ import QtQuick 2.2
 import Ubuntu.History 0.1
 import "dateUtils.js" as DateUtils
 
-Column {
-    height: childrenRect.height
-    property var messageData: null
-    property Item delegateItem
-    property var timestamp: messageData.timestamp
-    property string senderId: messageData.senderId
-    property var textReadTimestamp: messageData.textReadTimestamp
-    property int textMessageStatus: messageData.textMessageStatus
-    property var textMessageAttachments: messageData.textMessageAttachments
-    property bool newEvent: messageData.newEvent
-    property var textMessage: messageData.textMessage
-    property string accountId: messageData.accountId
-    property int index: -1
+    Column {
+        height: childrenRect.height
+        property var messageData: null
+        property Item delegateItem
+        property var timestamp: messageData.timestamp
+        property string senderId: messageData.senderId
+        property var textReadTimestamp: messageData.textReadTimestamp
+        property int textMessageStatus: messageData.textMessageStatus
+        property var textMessageAttachments: messageData.textMessageAttachments
+        property bool newEvent: messageData.newEvent
+        property var textMessage: messageData.textMessage
+        property string accountId: messageData.accountId
+        property int index: -1
 
-    // WORKAROUND: we can not use sections because the verticalLayoutDirection is ListView.BottomToTop the sections will appear
-    // bellow the item
-    MessageDateSection {
-        text: visible ? DateUtils.friendlyDay(timestamp) : ""
-        anchors {
-            left: parent.left
-            right: parent.right
-            leftMargin: units.gu(2)
-            rightMargin: units.gu(2)
-        }
-        visible: (index === root.count) || !DateUtils.areSameDay(eventModel.get(index+1).timestamp, timestamp)
-    }
+        // WORKAROUND: we can not use sections because the verticalLayoutDirection is ListView.BottomToTop the sections will appear
+        // bellow the item
+        Item {
+            property alias text: label.text
 
-    MessageDelegateFactory {
-        objectName: "message%1".arg(index)
+            height: units.gu(3)
+            Label {
+                id: label
 
-        incoming: senderId != "self"
-        // TODO: we have several items inside
-        selected: root.isSelected(delegateItem)
-        selectionMode: root.isInSelectionMode
-        accountLabel: multipleAccounts ? telepathyHelper.accountForId(accountId).displayName : ""
-        rightSideActions: {
-            var actions = []
-            if (textMessageStatus === MessageChatThreadModel.MessageStatusPermanentlyFailed) {
-                actions.push(reloadAction)
+                anchors.fill: parent
+                elide: Text.ElideRight
+                verticalAlignment: Text.AlignVCenter
+                fontSize: "small"
             }
-            actions.push(copyAction)
-            actions.push(infoAction)
-            return actions
+            ListItem.ThinDivider {
+                anchors.bottom: parent.bottom
+                anchors.rightMargin: 0
+                anchors.leftMargin: 0
+            }
         }
+        Rectangle {
+            id: root
 
-        // TODO: need select only the item
-        onItemClicked: {
-            if (root.isInSelectionMode) {
-                if (!root.selectItem(delegateItem)) {
-                    root.deselectItem(delegateItem)
+            property int messageStatus: -1
+            property bool messageIncoming: false
+            property alias sender: senderName.text
+            property string messageText
+            property var messageTimeStamp
+            property int maxDelegateWidth: units.gu(27)
+            property string accountName
+
+            readonly property bool error: (messageStatus === ChatMessagesThreadModel.MessageStatusPermanentlyFailed)
+            readonly property bool sending: (messageStatus === ChatMessagesThreadModel.MessageStatusUnknown ||
+                                             messageStatus === ChatMessagesdModel.MessageStatusTemporarilyFailed) && !messageIncoming
+
+            // XXXX: should be hoisted
+
+            function getText(text) {
+                return text
+            }
+
+            color: {
+                if (error) {
+                    return "#fc4949"
+                } else if (sending) {
+                    return "#b2b2b2"
+                } else if (messageIncoming) {
+                    return "#ffffff"
+                } else {
+                    return "#3fb24f"
                 }
             }
-        }
-        onItemPressAndHold: {
-            root.startSelection()
-            root.selectItem(delegateItem)
-        }
-        Component.onCompleted: {
-            if (newEvent) {
-                messages.markMessageAsRead(accountId, threadId, eventId, type);
+            radius: 9
+            height: senderName.height + textLabel.height + textTimestamp.height + units.gu(1)
+            width:  Math.min(units.gu(27),
+                             Math.max(textLabel.contentWidth, textTimestamp.contentWidth))
+                    + units.gu(3)
+            anchors{
+                leftMargin:  units.gu(1)
+                rightMargin: units.gu(1)
+            }
+
+            Label {
+                id: senderName
+
+                anchors {
+                    top: parent.top
+                    topMargin: units.gu(0.5)
+                    left: parent.left
+                    leftMargin: root.messageIncoming ? units.gu(2) : units.gu(1)
+                }
+                height: text === "" ? 0 : paintedHeight
+                fontSize: "large"
+            }
+
+            Label {
+                id: textLabel
+                objectName: "messageText"
+
+                anchors {
+                    top: sender == "" ? parent.top : senderName.bottom
+                    topMargin: sender == "" ? units.gu(0.5) : units.gu(1)
+                    left: parent.left
+                    leftMargin: units.gu(1)
+                }
+                width: paintedWidth > maxDelegateWidth ? maxDelegateWidth : undefined
+                fontSize: "medium"
+                height: contentHeight
+                onLinkActivated:  Qt.openUrlExternally(link)
+                text: root.getText(messageText)
+                textFormat: Text.RichText
+                wrapMode: Text.Wrap
+                color: root.messageIncoming ? UbuntuColors.darkGrey : "white"
+            }
+
+            Label {
+                id: textTimestamp
+                objectName: "messageDate"
+
+                anchors{
+                    top: textLabel.bottom
+                    topMargin: units.gu(0.5)
+                    left: parent.left
+                    leftMargin: units.gu(1)
+                }
+
+                visible: !root.sending
+                height: units.gu(2)
+                width: visible ? maxDelegateWidth : 0
+                fontSize: "xx-small"
+                color: root.messageIncoming ? UbuntuColors.lightGrey : "white"
+                opacity: root.messageIncoming ? 1.0 : 0.8
+                elide: Text.ElideRight
+                text: {
+                    if (messageTimeStamp === "")
+                        return ""
+
+                    var str = Qt.formatTime(messageTimeStamp, Qt.DefaultLocaleShortDate)
+                    if (root.accountName.length === 0 || !root.messageIncoming) {
+                        return str
+                    }
+                    str += " @ %1".arg(root.accountName)
+                    return str
+                }
+            }
+
+            ColoredImage {
+                id: bubbleArrow
+
+                source: Qt.resolvedUrl("./graphics/conversation_bubble_arrow.png")
+                color: root.color
+                asynchronous: false
+                anchors {
+                    bottom: parent.bottom
+                    bottomMargin: units.gu(2)
+                }
+                width: units.gu(1)
+                height: units.gu(1.5)
+
+                states: [
+                    State {
+                        when: root.messageIncoming
+                        name: "incoming"
+                        AnchorChanges {
+                            target: bubbleArrow
+                            anchors.right: root.left
+                        }
+                    },
+                    State {
+                        when: !root.messageIncoming
+                        name: "outgoing"
+                        AnchorChanges {
+                            target: bubbleArrow
+                            anchors.left: root.right
+                        }
+                        PropertyChanges {
+                            target: bubbleArrow
+                            mirror: true
+                        }
+                    }
+                ]
             }
         }
     }
 
-    Item {
-        property alias text: label.text
-
-        height: units.gu(3)
-        Label {
-            id: label
-
-            anchors.fill: parent
-            elide: Text.ElideRight
-            verticalAlignment: Text.AlignVCenter
-            fontSize: "small"
-        }
-        ListItem.ThinDivider {
-            anchors.bottom: parent.bottom
-            anchors.rightMargin: 0
-            anchors.leftMargin: 0
-        }
-    }
-}
 

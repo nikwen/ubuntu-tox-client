@@ -410,9 +410,7 @@ MainView {
                     bottom: messageColumn.top
                     top: contactsDetailsPage.top
                 }
-
-
-                delegate: UbuntuShape {
+              delegate: UbuntuShape {
                           color: "lightgrey"
                           height: timestampLabel.height+textLabel.height+units.gu(2)
                           width: parent.width
@@ -442,7 +440,6 @@ MainView {
                               }
 
                          }
-
                 }
              }
 
